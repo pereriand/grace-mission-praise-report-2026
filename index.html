@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grace Mission · Annual Praise Report 2026</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: "Segoe UI", sans-serif;
+      color: #19284b;
+      background: #faf9f6;
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100svh; display: flex; flex-direction: column; }
+    header, footer { padding: 17px clamp(18px, 4vw, 60px); }
+    header { display: flex; align-items: center; justify-content: space-between; gap: 14px 24px; flex-wrap: wrap; }
+    h1 { font: 500 clamp(1.15rem, 2.4vw, 1.65rem)/1.2 Georgia, serif; margin: 4px 0 0; }
+    .organization { margin: 0; color: #314580; font-size: .72rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
+    .toolbar, .views { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+    .toolbar { gap: 10px 18px; }
+    button, select, .proof { font: 600 .85rem/1.2 "Segoe UI", sans-serif; }
+    button, select {
+      padding: 9px 13px; min-height: 40px; border: 1px solid #c8d0e1; border-radius: 5px;
+      background: #fff; color: #223f9a; cursor: pointer;
+    }
+    select { max-width: 100%; }
+    button:hover, button[aria-pressed="true"] { background: #223f9a; border-color: #223f9a; color: #fff; }
+    :focus-visible { outline: 3px solid #526ee1; outline-offset: 3px; }
+    main { flex: 1; display: flex; min-height: 0; }
+    .stage {
+      flex: 1; min-width: 0; min-height: 350px; position: relative; overflow: hidden;
+      border-block: 1px solid #d1d7e5;
+      background: radial-gradient(ellipse at 50% 42%, #f3f4f9 10%, #e2e7f1 85%);
+      touch-action: none; user-select: none; cursor: grab;
+      perspective: 2400px;
+    }
+    .stage::before {
+      position: absolute; inset: 0; content: "";
+      background-image: radial-gradient(#8391af45 .7px, transparent .7px);
+      background-size: 17px 17px; pointer-events: none;
+    }
+    .stage.dragging, .stage.dragging .face { cursor: grabbing; }
+    .sheet, .panel { position: absolute; transform-style: preserve-3d; }
+    .sheet {
+      top: 50%; left: 50%; width: var(--panel-width, 210px); aspect-ratio: 210 / 297;
+      transform: translate(-50%, -50%) rotateX(var(--pitch)) rotateY(var(--yaw));
+    }
+    .panel { inset: 0; }
+    .left { left: -100%; right: 100%; transform-origin: right center; transform: translateZ(var(--cover-layer)) rotateY(var(--left-fold)); }
+    .right { left: 100%; right: -100%; transform-origin: left center; transform: translateZ(var(--flap-layer)) rotateY(var(--right-fold)); }
+    .face {
+      position: absolute; inset: 0; backface-visibility: hidden;
+      background: #f8f7f3; box-shadow: 0 0 0 .5px #1a2c5629, 0 5px 12px #192e561f;
+      transform: translateZ(.16px);
+    }
+    .outside { transform: rotateY(180deg) translateZ(.16px); }
+    .face img { display: block; width: 100%; height: 100%; object-fit: fill; pointer-events: none; }
+    [data-wing] .face { cursor: ew-resize; }
+    .sheet[hidden] { display: none; }
+    .loading { position: absolute; inset: 50% 16px auto; margin: 0; text-align: center; color: #465774; }
+    footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 24px; font-size: .83rem; color: #465774; }
+    footer p { margin: 0; }
+    kbd { font: 600 .77rem "Segoe UI", sans-serif; padding: .12em .35em; border: 1px solid #c8d0e1; border-radius: 3px; background: #fff; }
+    .proof { color: #223f9a; text-underline-offset: 3px; }
+    .announcement { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+    @media (max-width: 600px) {
+      header, footer { padding-block: 12px; }
+      .stage { min-height: 330px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <p class="organization">Grace Mission</p>
+      <h1>Annual Praise Report 2026</h1>
+    </div>
+    <div class="toolbar">
+      <select id="design" aria-label="Design version">
+        <option value="v1-">Version 1 · Original layout</option>
+        <option value="./" selected>Version 2 · Impact and invitations</option>
+      </select>
+      <nav class="views" aria-label="Brochure views">
+        <button type="button" data-view="inside" aria-pressed="false">Inside flat</button>
+        <button type="button" data-view="outside" aria-pressed="false">Outside flat</button>
+        <button type="button" data-view="closed" aria-pressed="false">Closed</button>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <section class="stage" aria-label="Interactive 3D brochure" aria-describedby="controls">
+      <p class="loading">Loading brochure artwork…</p>
+      <div class="sheet" hidden>
+        <div class="panel center">
+          <div class="face"><img data-art="inside-1" alt="Inside center, blessings 5 to 7"></div>
+          <div class="face outside"><img data-art="outside-1" alt="Back cover, ways to take part and a message from the board"></div>
+        </div>
+        <div class="panel right" data-wing="right">
+          <div class="face"><img data-art="inside-2" alt="Inside right, blessings 8 to 10"></div>
+          <div class="face outside"><img data-art="outside-0" alt="Fold-in flap, Mother Rachel’s letter and blessing 1"></div>
+        </div>
+        <div class="panel left" data-wing="left">
+          <div class="face"><img data-art="inside-0" alt="Inside left, blessings 2 to 4"></div>
+          <div class="face outside"><img data-art="outside-2" alt="Front cover, 2026 Annual Praise Report"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer>
+    <p id="controls">Hold <kbd>←</kbd> <kbd>→</kbd> or <kbd>A</kbd> <kbd>D</kbd> to turn, <kbd>W</kbd> <kbd>S</kbd> to tilt. Drag either outer panel to fold, or drag the center to turn.</p>
+    <a class="proof" href="GM%20Annual%20Praise%20Report%202026%20-%20Trifold%20Proof.pdf" target="_blank" rel="noopener">Open print proof</a>
+  </footer>
+  <span class="announcement" role="status"></span>
+  <script>
+    const stage = document.querySelector('.stage');
+    const sheet = document.querySelector('.sheet');
+    const buttons = [...document.querySelectorAll('[data-view]')];
+    const design = document.querySelector('#design');
+    const proof = document.querySelector('.proof');
+    const proofFilename = proof.getAttribute('href');
+    const held = new Set();
+    const controls = new Set(['ArrowLeft', 'ArrowRight', 'ArrowUp', 'ArrowDown', 'KeyA', 'KeyD', 'KeyW', 'KeyS']);
+    const state = { yaw: -8, pitch: 3, left: 38, right: 32 };
+    const presets = {
+      inside: { yaw: 0, pitch: 0, left: 0, right: 0 },
+      outside: { yaw: 180, pitch: 0, left: 0, right: 0 },
+      closed: { yaw: 0, pitch: 0, left: 180, right: 180 }
+    };
+    let drag = null;
+    let frame = 0;
+    let previousTime = 0;
+    let activeView = '';
+    let revision = '';
+    let pendingRevision = '';
+    let artworkRequest = null;
+
+    const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+
+    function draw() {
+      sheet.style.setProperty('--yaw', `${state.yaw}deg`);
+      sheet.style.setProperty('--pitch', `${state.pitch}deg`);
+      sheet.style.setProperty('--left-fold', `${state.left}deg`);
+      sheet.style.setProperty('--right-fold', `${-state.right}deg`);
+      // Give the closed cover its own paper layer above the tucked flap.
+      sheet.style.setProperty('--cover-layer', `${state.left > 177 ? 1.6 : 0}px`);
+      sheet.style.setProperty('--flap-layer', `${state.right > 177 ? .8 : 0}px`);
+    }
+
+    function selectView(name) {
+      activeView = name;
+      for (const button of buttons) {
+        button.setAttribute('aria-pressed', String(button.dataset.view === name));
+      }
+    }
+
+    function moveView(yaw, pitch) {
+      state.yaw = (state.yaw + yaw) % 360;
+      state.pitch = clamp(state.pitch + pitch, -68, 68);
+      if (activeView) selectView('');
+      draw();
+    }
+
+    function turn(now) {
+      frame = 0;
+      if (!held.size) return;
+      const seconds = previousTime ? Math.min((now - previousTime) / 1000, .05) : 0;
+      previousTime = now;
+      const isHeld = (...keys) => keys.some(key => held.has(key));
+      const horizontal = Number(isHeld('ArrowRight', 'KeyD')) - Number(isHeld('ArrowLeft', 'KeyA'));
+      const vertical = Number(isHeld('ArrowDown', 'KeyS')) - Number(isHeld('ArrowUp', 'KeyW'));
+      if (horizontal || vertical) moveView(horizontal * 94 * seconds, vertical * 74 * seconds);
+      frame = requestAnimationFrame(turn);
+    }
+
+    addEventListener('keydown', event => {
+      if (!controls.has(event.code) || event.ctrlKey || event.metaKey || event.altKey ||
+          event.target === design) return;
+      event.preventDefault();
+      held.add(event.code);
+      if (!frame) {
+        previousTime = 0;
+        frame = requestAnimationFrame(turn);
+      }
+    });
+    addEventListener('keyup', event => held.delete(event.code));
+    addEventListener('blur', () => held.clear());
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) held.clear();
+      else refreshArtwork();
+    });
+
+    stage.addEventListener('pointerdown', event => {
+      if (sheet.hidden || drag || event.button !== 0) return;
+      const wing = event.target.closest('[data-wing]')?.dataset.wing;
+      const facing = Math.cos(state.yaw * Math.PI / 180) >= 0 ? 1 : -1;
+      drag = {
+        id: event.pointerId, wing, x: event.clientX, y: event.clientY,
+        angle: state[wing], direction: (wing === 'left' ? 1 : -1) * facing,
+        travel: Math.max(115, sheet.offsetWidth * .72)
+      };
+      stage.setPointerCapture(event.pointerId);
+      stage.classList.add('dragging');
+    });
+    stage.addEventListener('pointermove', event => {
+      if (event.pointerId !== drag?.id) return;
+      const dx = event.clientX - drag.x;
+      const dy = event.clientY - drag.y;
+      if (drag.wing) {
+        state[drag.wing] = clamp(drag.angle + dx * drag.direction * 180 / drag.travel, 0, 180);
+        if (activeView) selectView('');
+        draw();
+      } else {
+        moveView(dx * .46, -dy * .42);
+        drag.x = event.clientX;
+        drag.y = event.clientY;
+      }
+    });
+    for (const eventName of ['pointerup', 'pointercancel', 'lostpointercapture']) {
+      stage.addEventListener(eventName, event => {
+        if (event.pointerId !== drag?.id) return;
+        drag = null;
+        stage.classList.remove('dragging');
+      });
+    }
+
+    for (const button of buttons) {
+      button.addEventListener('click', () => {
+        Object.assign(state, presets[button.dataset.view]);
+        selectView(button.dataset.view);
+        draw();
+      });
+    }
+
+    new ResizeObserver(() => {
+      const margin = stage.clientWidth < 600 ? 24 : 64;
+      const width = Math.min((stage.clientWidth - margin) / 3, (stage.clientHeight - 84) * 210 / 297);
+      sheet.style.setProperty('--panel-width', `${width}px`);
+    }).observe(stage);
+    draw();
+
+    window.receiveBrochureArtwork = async (version, artwork) => {
+      const directory = document.currentScript?.dataset.directory;
+      const update = directory + version;
+      if (directory !== design.value || update === revision || update === pendingRevision) return;
+      pendingRevision = update;
+      const faces = [...document.querySelectorAll('[data-art]')];
+      const sources = faces.map(face => {
+        const [side, index] = face.dataset.art.split('-');
+        return artwork[side][index];
+      });
+      try {
+        await Promise.all(sources.map(src => {
+          const image = new Image();
+          image.src = src;
+          return image.decode();
+        }));
+        if (pendingRevision !== update || directory !== design.value) return;
+        faces.forEach((face, index) => { face.src = sources[index]; });
+        proof.href = directory + proofFilename;
+        document.querySelector('.announcement').textContent = design.selectedOptions[0].textContent + ' displayed.';
+        revision = update;
+        sheet.hidden = false;
+        document.querySelector('.loading').hidden = true;
+      } catch {
+        if (sheet.hidden) document.querySelector('.loading').textContent = 'Brochure artwork could not be loaded.';
+      } finally {
+        if (pendingRevision === update) pendingRevision = '';
+      }
+    };
+
+    function refreshArtwork() {
+      if (artworkRequest || document.hidden) return;
+      const script = document.createElement('script');
+      artworkRequest = script;
+      script.dataset.directory = design.value;
+      script.src = `${design.value}brochure-artwork.js?revision=${Date.now()}`;
+      script.onload = script.onerror = event => {
+        if (event.type === 'error' && sheet.hidden) {
+          document.querySelector('.loading').textContent = 'Keep the viewer beside brochure-artwork.js in the report folder.';
+        }
+        script.remove();
+        if (artworkRequest === script) artworkRequest = null;
+      };
+      document.head.append(script);
+    }
+
+    design.addEventListener('change', () => {
+      held.clear();
+      pendingRevision = '';
+      artworkRequest?.remove();
+      artworkRequest = null;
+      refreshArtwork();
+    });
+    refreshArtwork();
+    setInterval(refreshArtwork, 3000);
+  </script>
+</body>
+</html>
+
+
